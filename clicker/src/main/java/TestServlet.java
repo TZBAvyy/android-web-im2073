@@ -1,4 +1,3 @@
-package com.ntu.im2073;
 import java.io.*;
 
 import jakarta.servlet.*;            // Tomcat 10 (Jakarta EE 9)
