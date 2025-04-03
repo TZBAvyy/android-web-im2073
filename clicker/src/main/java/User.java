@@ -25,6 +25,14 @@ public class User {
     public boolean checkPassword(String password) {
         return this.password.equals(password);
     }
+    @Override
+    public String toString() {
+        return "User[" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ']';
+    }
 
     // STATIC METHODS
     public static User findUser(String email) {
