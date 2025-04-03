@@ -1,5 +1,6 @@
 *.bat
 .vscode
+*.properties
 
 target/
 pom.xml.tag
