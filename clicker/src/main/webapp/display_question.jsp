@@ -4,16 +4,19 @@
 
 <t:base>
 	<jsp:attribute name="head">
-		<title>Kahoot 2 - Home page</title>	
+		<title>Kahoot 2 - Question ${question_no}</title>	
     </jsp:attribute>
 
 	<jsp:body>
 		<div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>Welcome to Kahoot 2</h1>
-                    <p>Click on the button below to start the game</p>
-                    <a href="display?room_id=1" class="btn btn-primary">Start Game</a>
+                    <h2>${question.question_text}</h2>
+                    <ol>
+                    <c:forEach items="${question.choices}" var="choice">
+                        <li>${choice}</li>
+                    </c:forEach>
+                    </ol>
                 </div>
             </div>
         </div>

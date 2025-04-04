@@ -28,18 +28,11 @@ public class Question {
     public char getAnswer() {
         return answer;
     }
-    public String getChoice_one() {
-        return choices[0];
+    public String[] getChoices() {
+        return choices;
     }
-    public String getChoice_two() {
-        return choices[1];
-    }
-    public String getChoice_three() {
-        return choices[2];
-    }
-    public String getChoice_four() {
-        return choices[3];
-    }
+
+
     @Override
     public String toString() {
         return "Question[" +
