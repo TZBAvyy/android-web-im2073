@@ -45,6 +45,39 @@ public class Question {
     }
 
     // STATIC METHODS
+    public static Question getQuestion(int id) {
+        final DBProperties dbProps = new DBProperties();
+        final String sqlStatement = """
+                select * from questions where id=?; 
+                """;
+        try(
+            Connection conn = DriverManager.getConnection(dbProps.url, dbProps.user, dbProps.password);
+            PreparedStatement stmt = conn.prepareStatement(sqlStatement);
+        ) {
+            stmt.setInt(1, id);
+            ResultSet result = stmt.executeQuery();
+            if (result.next()) {
+                String[] choices = new String[4];
+                choices[0] = result.getString("choice_one");
+                choices[1] = result.getString("choice_two");
+                choices[2] = result.getString("choice_three");
+                choices[3] = result.getString("choice_four");
+                Question question = new Question(
+                    id,
+                    result.getInt("room_id"),
+                    result.getString("question_text"),
+                    result.getString("answer").charAt(0),
+                    choices
+                );
+                return question;
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static ArrayList<Question> getRoomQuestions(int room_id) {
         final DBProperties dbProps = new DBProperties();
         final String sqlStatement = """

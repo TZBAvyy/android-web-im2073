@@ -73,7 +73,6 @@ INSERT INTO `Players` (`room_id`, `user_id`) VALUES
 (2, 2);
 
 INSERT INTO `Responses` (`question_id`, `player_id`, `choice`) VALUES
-(1, 1, 'A'),
 (1, 2, 'B'),
 (2, 1, 'C'),
 (2, 2, 'D'),
