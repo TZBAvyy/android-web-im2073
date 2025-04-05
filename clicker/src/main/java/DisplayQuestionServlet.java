@@ -12,15 +12,31 @@ public class DisplayQuestionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("\nGET Request to /display");
+
+        // PARAMETER CHECKING
         if (req.getParameter("room_id") == null) {
+            System.out.println("Missing room_id parameter detected");
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing room_id parameter");
             return;
         } 
-
         final int ROOM_ID = Integer.parseInt(req.getParameter("room_id"));
-        final String QUESTION_NUMBER_PARAMETER = req.getParameter("question_no");
-        final ArrayList<Question> questions = Question.getRoomQuestions(ROOM_ID);
+        System.out.print("Parameters: room_id=" + ROOM_ID);
 
+        final String QUESTION_NUMBER_PARAMETER = req.getParameter("question_no");
+        if (QUESTION_NUMBER_PARAMETER != null) {
+            System.out.print(", question_no=" + QUESTION_NUMBER_PARAMETER);
+        }
+        
+        // FETCHING ROOM QUESTIONS
+        final ArrayList<Question> questions = Question.getRoomQuestions(ROOM_ID);
+        if (questions == null) {
+            System.out.println("Room not found or no questions available");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Room not found or no questions available");
+            return;
+        }
+        System.out.println("Questions: " + questions);
+
+        // SETTING ATTRIBUTES FOR JSP
         req.setAttribute("room_id", ROOM_ID);
         if (QUESTION_NUMBER_PARAMETER != null) {
             // Display a specific question if ?question_no=... is provided
@@ -33,5 +49,6 @@ public class DisplayQuestionServlet extends HttpServlet {
             req.setAttribute("questions", questions);
             req.getRequestDispatcher("/list_questions.jsp").include(req, resp);
         }
+        System.out.println("Request sent successfully");
     }
 }

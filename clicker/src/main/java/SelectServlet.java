@@ -70,6 +70,7 @@ public class SelectServlet extends HttpServlet {
             stmt.setInt(2, QUESTION_ID);
             stmt.setString(3, String.valueOf(CHOICE));
             stmt.executeUpdate();
+            System.out.println("Response inserted successfully");
         } catch (SQLException e) {
             System.out.println("Error inserting response into database: " + e.getMessage());
             e.printStackTrace();
