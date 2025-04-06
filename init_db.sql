@@ -30,8 +30,9 @@ CREATE TABLE `RoomSessions`(
     `room_code` VARCHAR(6) NOT NULL,
     `max_capacity` BIGINT NOT NULL DEFAULT 10,
     `owner_id` BIGINT UNSIGNED NOT NULL,
-    `isOpen` BOOLEAN NOT NULL DEFAULT 1,
-    `questionInterval` BIGINT NOT NULL DEFAULT 30
+    `is_open` BOOLEAN NOT NULL DEFAULT 0,
+    `question_interval` BIGINT NOT NULL DEFAULT 30,
+    `current_question` BIGINT UNSIGNED NULL
 );
 CREATE TABLE `Players`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -41,6 +42,8 @@ CREATE TABLE `Players`(
 );
 ALTER TABLE
     `Questions` ADD CONSTRAINT `questions_room_id_foreign` FOREIGN KEY(`room_id`) REFERENCES `RoomSessions`(`id`);
+ALTER TABLE
+    `RoomSessions` ADD CONSTRAINT `roomsessions_current_question_foreign` FOREIGN KEY(`current_question`) REFERENCES `Questions`(`id`);
 ALTER TABLE
     `Responses` ADD CONSTRAINT `responses_question_id_foreign` FOREIGN KEY(`question_id`) REFERENCES `Questions`(`id`);
 ALTER TABLE
