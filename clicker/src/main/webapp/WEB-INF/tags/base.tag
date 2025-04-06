@@ -16,8 +16,8 @@
 <body>
     <%-- BASE HEADER COMPONENT --%>
     <header>
-        <c:if test="${not empty user}">
-            <h1>Logged in as: ${user.name}</h1>
+        <c:if test="${not empty username}">
+            <h1>Logged in as: ${username}</h1>
         </c:if>
     </header>
 

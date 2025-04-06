@@ -14,11 +14,11 @@
                     <h1>Welcome to Kahoot 2</h1>
                     <p>Click on the button below to start the game</p>
                     <c:choose>
-                        <c:when test="${empty user}">
+                        <c:when test="${empty username}">
                             <p>You are not logged in. Please <a href="login">log in</a> to start the game.</p>
                         </c:when>
                         <c:otherwise>
-                            <p>Hello, ${user.name}! You are logged in.</p>
+                            <p>Hello, ${username}! You are logged in.</p>
                             <p>Click on the button below to start the game.</p>
                             <a href="display?room_id=1" class="btn btn-primary">Start Game</a>
                         </c:otherwise>

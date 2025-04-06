@@ -58,7 +58,6 @@ public class LoginServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_OK);
         } else {
             System.out.println("User logged in from web app");
-            req.getSession(true).setAttribute("user", user);
             resp.sendRedirect("/quiz");
         }
         System.out.println("Login successful");
