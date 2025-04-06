@@ -16,10 +16,10 @@
                     <a href="game" class="btn btn-primary">Start Game</a>
                 </div>
             </div>
-            <c:forEach items="${questions}" var="question" varStatus="counter">
+            <c:forEach items="${questions}" var="question">
                 <div class="row">
                     <div class="col-md-12">
-                        <a href="display?room_id=${room_id}&question_no=${counter.index}">
+                        <a href="display?question_id=${question.id}">
                             <h2>${question.question_text}</h2>
                         </a>
                     </div>

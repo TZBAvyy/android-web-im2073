@@ -4,7 +4,7 @@
 
 <t:base>
 	<jsp:attribute name="head">
-		<title>Kahoot 2 - Question ${question_no}</title>	
+		<title>Kahoot 2 - Question</title>	
     </jsp:attribute>
 
 	<jsp:body>
