@@ -15,15 +15,16 @@ public class DisplayQuestionServlet extends HttpServlet {
         if (req.getParameter("room_id") != null) { 
             System.out.println("room_id found in GET Request");
             final int ROOM_ID = Integer.parseInt(req.getParameter("room_id"));
-            final ArrayList<Question> questions = Question.getRoomQuestions(ROOM_ID);
-            if (questions == null) {
-                System.out.println("Room not found or no questions available");
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Room not found or no questions available");
+            final Room ROOM = Room.getRoom(ROOM_ID);
+            if (ROOM == null) {
+                System.out.println("Room not found");
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Room not found");
                 return;
             }
-            System.out.println("Room ID: " + ROOM_ID);
+            System.out.println(ROOM);
+            req.setAttribute("room_code", ROOM.getRoomCode());
+            final ArrayList<Question> questions = Question.getRoomQuestions(ROOM_ID);
             System.out.println("Questions: " + questions);
-            req.setAttribute("room_id", ROOM_ID);
             req.setAttribute("questions", questions);
             req.getRequestDispatcher("/list_questions.jsp").include(req, resp);
         
