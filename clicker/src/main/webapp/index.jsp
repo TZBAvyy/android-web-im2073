@@ -19,8 +19,14 @@
                         </c:when>
                         <c:otherwise>
                             <p>Hello, ${username}! You are logged in.</p>
-                            <p>Click on the button below to start the game.</p>
-                            <a href="display?room_id=1" class="btn btn-primary">Start Game</a>
+                            <%-- TODO: Create CreateRoomServlet.java --%>
+                            <p>Your rooms: <a href="create_room?user_email=${user.email}">[+]</a></p>
+                            <c:forEach var="room" items="${rooms}" varStatus="counter">
+                                <p>
+                                    Room Number: ${counter.index+1}, Room Code: ${room.getRoomCode()}, 
+                                    <a href="display?room_id=${room.id}">Questions</a>
+                                </p>
+                            </c:forEach>
                         </c:otherwise>
                     </c:choose>
                     

@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 import jakarta.servlet.*;            // Tomcat 10 (Jakarta EE 9)
 import jakarta.servlet.http.*;
@@ -48,11 +49,15 @@ public class LoginServlet extends HttpServlet {
         } else {
             System.out.println("User found: " + user.getName());
         }
+
+        // FIND ROOMS FOR USER
+        final ArrayList<Room> ROOMS = Room.getUserRooms(user.getId());
         
         // SETTING ATTRIBUTES FOR JSP
         HttpSession session = req.getSession(true);
         session.setAttribute("username", user.getName());
         session.setAttribute("useremail", user.getEmail());
+        session.setAttribute("rooms", ROOMS);
         if (req.getParameter("web") == null) {
             System.out.println("User logged in from mobile app");
             resp.setStatus(HttpServletResponse.SC_OK);
