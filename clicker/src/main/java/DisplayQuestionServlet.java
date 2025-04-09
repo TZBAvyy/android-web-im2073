@@ -22,6 +22,7 @@ public class DisplayQuestionServlet extends HttpServlet {
                 return;
             }
             System.out.println(ROOM);
+            req.setAttribute("room_id", ROOM.getId());
             req.setAttribute("room_code", ROOM.getRoomCode());
             final ArrayList<Question> questions = Question.getRoomQuestions(ROOM_ID);
             System.out.println("Questions: " + questions);

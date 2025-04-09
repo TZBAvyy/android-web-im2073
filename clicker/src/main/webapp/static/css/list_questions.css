@@ -1,0 +1,10 @@
+.start-btn {
+    background-color: var(--color-success); /* Green */
+    border: none;
+    color: white;
+    text-decoration: none;
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 10px 20px;
+}

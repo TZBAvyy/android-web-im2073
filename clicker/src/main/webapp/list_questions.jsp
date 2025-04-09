@@ -4,6 +4,7 @@
 
 <t:base>
 	<jsp:attribute name="head">
+        <link rel="stylesheet" href="static/css/list_questions.css">
 		<title>Kahoot 2 - List Questions</title>	
     </jsp:attribute>
 
@@ -34,9 +35,7 @@
                     </c:forEach>
                 </c:otherwise>
             </c:choose>
-            <div>
-            
-            </div>
+            <a href="start?room_id=${room_id}" class="start-btn">Start Game</a>
         </div>
 	</jsp:body>
 </t:base>
