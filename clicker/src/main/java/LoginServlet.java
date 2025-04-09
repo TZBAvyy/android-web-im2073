@@ -13,12 +13,15 @@ public class LoginServlet extends HttpServlet {
         resp.sendRedirect("/quiz");
     }
 
+    // TEST POST: 
+    // curl --data "email=gibraltar.av@gmail.com&password=xxxx" localhost:9999/quiz/login
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("\nPOST Request to /login");
 
         // CHECKING IF USER IS ALREADY LOGGED IN
-        if (req.getSession(false).getAttribute("user") != null) {
+        HttpSession session = req.getSession(false);
+        if (session != null && session.getAttribute("userid") != null) {
             System.out.println("User already logged in, redirecting to home page");
             resp.sendRedirect("/quiz");
             return;
@@ -53,15 +56,21 @@ public class LoginServlet extends HttpServlet {
         // FIND ROOMS FOR USER
         final ArrayList<Room> ROOMS = Room.getUserRooms(user.getId());
         
-        // SETTING ATTRIBUTES FOR JSP
-        HttpSession session = req.getSession(true);
-        session.setAttribute("username", user.getName());
-        session.setAttribute("useremail", user.getEmail());
-        session.setAttribute("rooms", ROOMS);
+        // SETTING ATTRIBUTES TO RESPONSE/SESSION
         if (req.getParameter("web") == null) {
             System.out.println("User logged in from mobile app");
             resp.setStatus(HttpServletResponse.SC_OK);
+            resp.setContentType("application/json");
+            resp.getWriter().write("{" +
+                        "\"userid\":" + user.getId() + "," +
+                        "\"username\":\"" + user.getName() + "\"," +
+                        "}");
         } else {
+            session = req.getSession(true);
+            session.setAttribute("userid", user.getId());
+            session.setAttribute("username", user.getName());
+            session.setAttribute("useremail", user.getEmail());
+            session.setAttribute("rooms", ROOMS);
             System.out.println("User logged in from web app");
             resp.sendRedirect("home.jsp");
         }
