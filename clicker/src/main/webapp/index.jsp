@@ -5,7 +5,7 @@
 <t:base>
 	<jsp:attribute name="head">
         <link rel="stylesheet" href="static/css/index.css">
-		<title>Kahoot 2 - Home page</title>	
+		<title>Kahoot 2 - Login page</title>	
     </jsp:attribute>
 
 	<jsp:body>

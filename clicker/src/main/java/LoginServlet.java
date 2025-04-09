@@ -67,9 +67,8 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("userid", user.getId());
             session.setAttribute("username", user.getName());
             session.setAttribute("useremail", user.getEmail());
-            session.setAttribute("rooms", Room.getUserRooms(user.getId()));
             System.out.println("User logged in from web app");
-            resp.sendRedirect("home.jsp");
+            resp.sendRedirect("/quiz/home");
         }
         System.out.println("Login successful");
     }

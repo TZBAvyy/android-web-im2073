@@ -1,0 +1,19 @@
+.rooms-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.rooms-container a {
+    text-decoration: none;
+    color: var(--color-info);
+}
+
+.create-room-btn {
+    text-decoration: none;
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+}

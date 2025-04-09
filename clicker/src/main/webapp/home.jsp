@@ -4,15 +4,23 @@
 
 <t:base>
 	<jsp:attribute name="head">
-        <link rel="stylesheet" href="static/css/index.css">
+        <link rel="stylesheet" href="static/css/home.css">
 		<title>Kahoot 2 - Home page</title>	
     </jsp:attribute>
 
 	<jsp:body>
 		<div class="container">
-            <form action="login" method="POST" id="login-form">
-                LOGGED IN
-            </form>
+            <h2>Rooms Available:</h2>
+            <div class="rooms-container">
+                <c:if test="${not empty rooms}">
+                    <c:forEach items="${rooms}" var="room" varStatus="counter">
+                        <a href="display?room_id=${room.id}">
+                        Room ${counter.index+1}: [${room.getRoomCode()} | MAX PLAYERS: ${room.getMaxCapacity()}]
+                        </a>
+                    </c:forEach>
+                </c:if>
+            </div>
+            <a href="create_room" class="create-room-btn">Create New Room</a>
         </div>
 	</jsp:body>
 </t:base>
