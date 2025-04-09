@@ -29,7 +29,9 @@
     </header>
 
     <%-- CONTENT COMPONENT --%>
-    <jsp:doBody/>
+    <div class="content">
+        <jsp:doBody/>
+    </div>
 
     <%-- BASE FOOTER COMPONENT --%>
     <footer>
