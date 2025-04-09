@@ -4,34 +4,39 @@
 
 <t:base>
 	<jsp:attribute name="head">
+        <link rel="stylesheet" href="static/css/index.css">
 		<title>Kahoot 2 - Home page</title>	
     </jsp:attribute>
 
 	<jsp:body>
 		<div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>Welcome to Kahoot 2</h1>
-                    <p>Click on the button below to start the game</p>
-                    <c:choose>
-                        <c:when test="${empty username}">
-                            <p>You are not logged in. Please <a href="login">log in</a> to start the game.</p>
-                        </c:when>
-                        <c:otherwise>
-                            <p>Hello, ${username}! You are logged in.</p>
-                            <%-- TODO: Create CreateRoomServlet.java --%>
-                            <p>Your rooms: <a href="create_room?user_email=${user.email}">[+]</a></p>
-                            <c:forEach var="room" items="${rooms}" varStatus="counter">
-                                <p>
-                                    Room Number: ${counter.index+1}, Room Code: ${room.getRoomCode()}, 
-                                    <a href="display?room_id=${room.id}">Questions</a>
-                                </p>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                    
+            <form action="login" method="POST" id="login-form">
+                <h2>Login to continue</h2>
+                <div class="form-item">
+                    <label for="email">Email: </label>
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="e.g. kahoot@gmail.com"
+                        required>
+                    <label for="password">Password: </label>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="e.g. 12345678"
+                        required>
                 </div>
-            </div>
+                <c:if test="${not empty error}">
+                    <div class="error-message">
+                        <c:out value="${error}"/>
+                    </div>
+                </c:if>
+                <input type="hidden" name="web" id="web" value="true">
+                <input type="submit" value="Login" class="submit-btn">
+                <p>Don't have an account? <a href="/register">Register here</a></p>
+            </form>
         </div>
 	</jsp:body>
 </t:base>

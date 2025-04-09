@@ -10,9 +10,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("\nGET Request to /login");
-        // Redirect to the login page if accessed via GET method
-        req.getRequestDispatcher("/loginform.jsp").forward(req, resp);
-        System.out.println("Redirecting to loginform.jsp");
+        resp.sendRedirect("/quiz");
     }
 
     @Override
@@ -38,13 +36,15 @@ public class LoginServlet extends HttpServlet {
 
         // USER AUTHENTICATION
         final User user = User.findUser(EMAIL_PARAM);
-        if (user == null) {
-            System.out.println("User not found");
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "User not found");
-            return;
-        } else if (!user.checkPassword(PASSWORD_PARAM)) {
-            System.out.println("Incorrect password for user: " + user.getName());
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect password for user: " + user.getName());
+        if (user == null || !user.checkPassword(PASSWORD_PARAM)) {
+            String error = "Incorrect email or password";
+            System.out.println(error);
+            if (req.getParameter("web") == null) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, error);
+            } else {
+                req.setAttribute("error", error);
+                req.getRequestDispatcher("index.jsp").include(req, resp);
+            }
             return;
         } else {
             System.out.println("User found: " + user.getName());
@@ -63,7 +63,7 @@ public class LoginServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_OK);
         } else {
             System.out.println("User logged in from web app");
-            resp.sendRedirect("/quiz");
+            resp.sendRedirect("home.jsp");
         }
         System.out.println("Login successful");
     }

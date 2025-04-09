@@ -16,9 +16,16 @@
 <body>
     <%-- BASE HEADER COMPONENT --%>
     <header>
-        <c:if test="${not empty username}">
-            <h1>Logged in as: ${username}</h1>
-        </c:if>
+        <div class="header-container">
+            <c:choose>
+                <c:when test="${empty current_room}">
+                    <h1>Kahoot 2</h1>
+                </c:when>
+                <c:otherwise>
+                    <h1>${current_room.getRoomCode()}</h1>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </header>
 
     <%-- CONTENT COMPONENT --%>
