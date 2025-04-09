@@ -4,21 +4,19 @@
 
 <t:base>
 	<jsp:attribute name="head">
+        <link rel="stylesheet" href="static/css/questions.css">
 		<title>Kahoot 2 - Question</title>	
     </jsp:attribute>
 
 	<jsp:body>
 		<div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2>${question.question_text}</h2>
-                    <ol>
-                    <c:forEach items="${question.choices}" var="choice">
-                        <li>${choice}</li>
-                    </c:forEach>
-                    </ol>
-                </div>
-            </div>
+            <h2>${question.question_text}</h2>
+            <ol class="choices-list" type="A">
+            <c:forEach items="${question.choices}" var="choice">
+                <li>${choice}</li>
+            </c:forEach>
+            </ol>
+            <a href="next_question" class="start-btn">Next Question</a>
         </div>
 	</jsp:body>
 </t:base>

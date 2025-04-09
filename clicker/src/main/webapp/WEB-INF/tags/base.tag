@@ -22,7 +22,7 @@
                     <h1>Kahoot 2</h1>
                 </c:when>
                 <c:otherwise>
-                    <h1>${current_room.getRoomCode()}</h1>
+                    <h1>Room Code: ${current_room.getRoomCode()}</h1>
                 </c:otherwise>
             </c:choose>
         </div>

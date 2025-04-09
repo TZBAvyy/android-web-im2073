@@ -4,34 +4,22 @@
 
 <t:base>
 	<jsp:attribute name="head">
-        <link rel="stylesheet" href="static/css/list_questions.css">
+        <link rel="stylesheet" href="static/css/questions.css">
 		<title>Kahoot 2 - List Questions</title>	
     </jsp:attribute>
 
 	<jsp:body>
 		<div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>Questions for Room: ${room_code}</h1>
-                </div>
-            </div>
+            <h1>Questions for Room: ${room_code}</h1>
             <c:choose>
                 <c:when test="${empty questions}">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2>No questions available</h2>
-                        </div>
-                    </div>
+                    <h2>No questions available</h2>
                 </c:when>
                 <c:otherwise>
                     <c:forEach items="${questions}" var="question">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <a href="display?question_id=${question.id}">
-                                    <h2>${question.question_text}</h2>
-                                </a>
-                            </div>
-                        </div>
+                        <a href="display?question_id=${question.id}">
+                            <h2>${question.question_text}</h2>
+                        </a>
                     </c:forEach>
                 </c:otherwise>
             </c:choose>
