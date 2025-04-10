@@ -51,11 +51,6 @@ public class StartGameServlet extends HttpServlet {
         }
         System.out.println("Questions found for room");
 
-        // Create array of question IDs that have been displayed
-        ArrayList<Integer> questionIds = new ArrayList<>();
-        questionIds.add(QUESTIONS.get(0).getId());
-        System.out.println("First question set to: " + QUESTIONS.get(0).getQuestion_text());
-
         // Update current_question to the first question in the room
         final DBProperties dbProps = new DBProperties();
         final String sqlStatement = """
@@ -67,16 +62,18 @@ public class StartGameServlet extends HttpServlet {
             Connection conn = DriverManager.getConnection(dbProps.url, dbProps.user, dbProps.password);
             PreparedStatement stmt = conn.prepareStatement(sqlStatement);
         ) {
-            stmt.setInt(1, questionIds.get(0));
+            stmt.setInt(1, QUESTIONS.get(0).getId());
             stmt.setInt(2, Integer.parseInt(ROOM_ID));
             stmt.executeUpdate();
             System.out.println("Current question updated in database");
 
+            ROOM.current_question_id = QUESTIONS.get(0).getId();
+
             session.setAttribute("current_room", ROOM);
-            session.setAttribute("questions_done", questionIds);
+            session.setAttribute("question_no", 0);
             System.out.println("Session attributes set, redirecting to first question");
 
-            resp.sendRedirect("display?question_id=" + questionIds.get(0));
+            resp.sendRedirect("display?question_id=" + QUESTIONS.get(0).getId());
         } catch (SQLException e) {
             e.printStackTrace();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error: " + e.getMessage());

@@ -21,7 +21,9 @@
             <c:forEach items="${responses}" var="result">
                 <p>${result.getPlayer_name()} - ${result.choice}</p>
             </c:forEach>
-            <a href="next_question" class="start-btn">Next Question</a>
+            <form action="display" method="post">
+                <input type="submit" class="start-btn" value="Next Question">
+            </form>
         </div>
 	</jsp:body>
 </t:base>

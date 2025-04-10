@@ -1,4 +1,8 @@
 import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import jakarta.servlet.*;            // Tomcat 10 (Jakarta EE 9)
@@ -51,5 +55,71 @@ public class DisplayQuestionServlet extends HttpServlet {
         }
 
         System.out.println("Request sent successfully");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("\nPOST Request to /display");
+
+        // Check if session exists and user is logged in
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("userid") == null) {
+            System.out.println("User not logged in, redirecting to login page");
+            resp.sendRedirect("/quiz");
+            return;
+        }
+        System.out.println("User logged in, user ID: " + session.getAttribute("userid"));
+
+        // Get session attributes
+        final Room ROOM = (Room) session.getAttribute("current_room");
+        final int QUESTION_NUMBER = (int) session.getAttribute("question_no") + 1;
+
+        // Check for the questions in room
+        final ArrayList<Question> QUESTIONS = Question.getRoomQuestions(ROOM.id);
+        if (QUESTIONS == null || QUESTIONS.isEmpty()) {
+            System.out.println("No questions found for room " + ROOM.id);
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "No questions found for room " + ROOM.id);
+            return;
+        }
+        System.out.println("Questions found for room");
+
+        // Check if the next question exists
+        if (QUESTION_NUMBER >= QUESTIONS.size()) {
+            System.out.println("Game ended, no more questions left");
+            session.removeAttribute("current_room");
+            session.removeAttribute("question_no");
+            resp.sendRedirect("/quiz/home");
+            return;
+        }
+
+        // Update current_question to the next question in the room
+        final DBProperties dbProps = new DBProperties();
+        final String sqlStatement = """
+                update roomsessions
+                set current_question = ?
+                where id = ?;
+                """;
+        try(
+            Connection conn = DriverManager.getConnection(dbProps.url, dbProps.user, dbProps.password);
+            PreparedStatement stmt = conn.prepareStatement(sqlStatement);
+        ) {
+            stmt.setInt(1, QUESTIONS.get(QUESTION_NUMBER).getId());
+            stmt.setInt(2, ROOM.id);
+            stmt.executeUpdate();
+            System.out.println("Current question updated in database");
+
+            ROOM.current_question_id = QUESTIONS.get(QUESTION_NUMBER).getId();
+
+            // Update session attributes
+            session.setAttribute("current_room", ROOM);
+            session.setAttribute("question_no", QUESTION_NUMBER);
+            System.out.println("Session attributes set, redirecting to first question");
+
+            resp.sendRedirect("display?question_id=" + QUESTIONS.get(QUESTION_NUMBER).getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error: " + e.getMessage());
+            return;
+        }
     }
 }
