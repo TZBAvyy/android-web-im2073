@@ -23,7 +23,10 @@
                     </c:forEach>
                 </c:otherwise>
             </c:choose>
-            <a href="start?room_id=${room_id}" class="start-btn">Start Game</a>
+            <form action="start" method="post">
+            <input type="hidden" name="room_id" value="${room_id}">
+            <input type="submit" value="Start Game" class="start-btn">
+            </form>
         </div>
 	</jsp:body>
 </t:base>

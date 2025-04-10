@@ -1,4 +1,8 @@
 import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import jakarta.servlet.*;            // Tomcat 10 (Jakarta EE 9)
@@ -8,10 +12,10 @@ import jakarta.servlet.annotation.*;
 @WebServlet("/start")
 public class StartGameServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("\nGET Request to /start");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("\nPOST Request to /start");
 
-        // Check GET parameters
+        // Check POST parameters
         final String ROOM_ID = req.getParameter("room_id");
         if (ROOM_ID == null) {
             System.out.println("Missing room_id parameter");
@@ -52,8 +56,31 @@ public class StartGameServlet extends HttpServlet {
         questionIds.add(QUESTIONS.get(0).getId());
         System.out.println("First question set to: " + QUESTIONS.get(0).getQuestion_text());
 
-        session.setAttribute("current_room", ROOM);
-        session.setAttribute("questions_done", questionIds);
-        resp.sendRedirect("display?question_id=" + questionIds.get(0));
+        // Update current_question to the first question in the room
+        final DBProperties dbProps = new DBProperties();
+        final String sqlStatement = """
+                update roomsessions
+                set current_question = ?
+                where id = ?;
+                """;
+        try(
+            Connection conn = DriverManager.getConnection(dbProps.url, dbProps.user, dbProps.password);
+            PreparedStatement stmt = conn.prepareStatement(sqlStatement);
+        ) {
+            stmt.setInt(1, questionIds.get(0));
+            stmt.setInt(2, Integer.parseInt(ROOM_ID));
+            stmt.executeUpdate();
+            System.out.println("Current question updated in database");
+
+            session.setAttribute("current_room", ROOM);
+            session.setAttribute("questions_done", questionIds);
+            System.out.println("Session attributes set, redirecting to first question");
+
+            resp.sendRedirect("display?question_id=" + questionIds.get(0));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error: " + e.getMessage());
+            return;
+        }
     }
 }
