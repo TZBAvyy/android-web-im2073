@@ -23,10 +23,10 @@ public class SelectServlet extends HttpServlet {
     //  - Invalid choice (choice)
     //  - Repeated response (player_id + question_id combination exists in reponses table) DONE
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("\nGET Request to /select");
-        final String QUESTION_ID_PARAMETER = req.getParameter("question_id");
-        final String PLAYER_ID_PARAMETER = req.getParameter("player_id");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("\nPOST Request to /select");
+        final String QUESTION_ID_PARAMETER = req.getParameter("current_question");
+        final String PLAYER_ID_PARAMETER = req.getParameter("playerId");
         final String CHOICE_PARAMETER = req.getParameter("choice");
 
         final boolean isParametersNull = (QUESTION_ID_PARAMETER == null || PLAYER_ID_PARAMETER == null || CHOICE_PARAMETER == null);
