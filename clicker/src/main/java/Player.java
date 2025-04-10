@@ -26,32 +26,5 @@ public class Player {
     public int getScore() {
         return score;
     }
-    public ArrayList<Response> getResponses() {
-        final DBProperties dbProps = new DBProperties();
-        final String sqlStatement = """
-                select * from responses where player_id=?; 
-                """;
-        try(
-            Connection conn = DriverManager.getConnection(dbProps.url, dbProps.user, dbProps.password);
-            PreparedStatement stmt = conn.prepareStatement(sqlStatement);
-        ) {
-            stmt.setInt(1, this.id);
-            ResultSet result = stmt.executeQuery();
-
-            ArrayList<Response> responses = new ArrayList<>();
-            while (result.next()) {
-                Response response = new Response(
-                        result.getInt("id"),
-                        this.id,
-                        result.getInt("question_id"),
-                        result.getString("choice").charAt(0)
-                );
-                responses.add(response);
-            }
-            return responses;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+    
 }

@@ -5,7 +5,8 @@
 <t:base>
 	<jsp:attribute name="head">
         <link rel="stylesheet" href="static/css/questions.css">
-		<title>Kahoot 2 - Question</title>	
+        <link rel="stylesheet" href="static/css/result.css">
+		<title>Kahoot 2 - Result</title>	
     </jsp:attribute>
 
 	<jsp:body>
@@ -16,7 +17,11 @@
                 <li>${choice}</li>
             </c:forEach>
             </ol>
-            <a href="result?question_id=${question.id}" class="start-btn">See Result</a>
+            <h3>Results</h3>
+            <c:forEach items="${responses}" var="result">
+                <p>${result.getPlayer_name()} - ${result.choice}</p>
+            </c:forEach>
+            <a href="next_question" class="start-btn">Next Question</a>
         </div>
 	</jsp:body>
 </t:base>
