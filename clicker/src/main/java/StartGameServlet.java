@@ -55,7 +55,7 @@ public class StartGameServlet extends HttpServlet {
         final DBProperties dbProps = new DBProperties();
         final String sqlStatement = """
                 update roomsessions
-                set current_question = ?
+                set current_question = ?, is_open = 1
                 where id = ?;
                 """;
         try(
@@ -68,6 +68,7 @@ public class StartGameServlet extends HttpServlet {
             System.out.println("Current question updated in database");
 
             ROOM.current_question_id = QUESTIONS.get(0).getId();
+            ROOM.is_open = true;
 
             session.setAttribute("current_room", ROOM);
             session.setAttribute("question_no", 0);

@@ -1,6 +1,3 @@
-import java.sql.*;
-import java.util.ArrayList;
-
 public class Player {
     int id;
     int room_id;
