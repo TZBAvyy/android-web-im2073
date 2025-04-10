@@ -101,4 +101,49 @@ public class Room {
             return null;
         }
     }
+
+    public static Integer getRoomId(String room_code) {
+        System.out.println("Attempting to find room_code: " + room_code);
+        final DBProperties dbProps = new DBProperties();
+        final String sqlStatement = """
+                select id from roomsessions where room_code=?; 
+                """;
+        try(
+            Connection conn = DriverManager.getConnection(dbProps.url, dbProps.user, dbProps.password);
+            PreparedStatement stmt = conn.prepareStatement(sqlStatement);
+        ) {
+            stmt.setString(1, room_code);
+            ResultSet result = stmt.executeQuery();
+            if (result.next()) {
+                return result.getInt("id");
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Integer joinRoom(int room_id, int user_id) {
+        final DBProperties dbProps = new DBProperties();
+        final String sqlStatement = """
+                insert into Players (room_id, user_id) values (?, ?); 
+                """;
+        try(
+            Connection conn = DriverManager.getConnection(dbProps.url, dbProps.user, dbProps.password);
+            PreparedStatement stmt = conn.prepareStatement(sqlStatement, Statement.RETURN_GENERATED_KEYS);
+        ) {
+            stmt.setInt(1, room_id);
+            stmt.setInt(2, user_id);
+            stmt.executeUpdate();
+            ResultSet keys = stmt.getGeneratedKeys();
+            if (keys.next()) {
+                return keys.getInt(1);
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
