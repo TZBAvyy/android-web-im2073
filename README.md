@@ -1,4 +1,7 @@
-# android-web-im2073
-Repository for NTU IM2073 Android Programming (WebApp Repo)
-
-https://drawsql.app/teams/solo-196/diagrams/im2073-android
+# IM2073 Android Programming Mini-Project (Web App)
+## Kahoot 2 'Clicker' App
+> Done by Avisena Gibraltar & Seaw Zhi Yi  
+> This repository is for the **Web** Application  
+> Android Repository: [https://github.com/TZBAvyy/android-app-im2073](https://github.com/TZBAvyy/android-app-im2073)
+### Description
+'Clicker' App inspired by Kahoot, where users are able to create custom rooms with questions and answers for other users to join and answer. Results will be displayed after every question.
